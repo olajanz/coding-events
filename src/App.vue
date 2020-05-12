@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Dashboard</router-link>
-      <router-link to="/create">CreateEvent</router-link>
+      <router-link to="/">Dashboard</router-link> |
+      <router-link to="/events/new">Create Event</router-link>
     </div>
     <router-view />
   </div>

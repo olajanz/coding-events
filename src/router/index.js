@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Dashboard from "@/views/Dashboard.vue";
 import CreateEvent from "@/views/CreateEvent.vue";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -11,8 +12,8 @@ const routes = [
     component: Dashboard
   },
   {
-    path: "/create",
-    name: "CreateEvent",
+    path: "/events/new",
+    name: "create-event",
     component: CreateEvent
   }
 ];

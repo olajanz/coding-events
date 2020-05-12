@@ -8,10 +8,12 @@ describe("CreateEvent", () => {
     expect(wrapper.contains("h1")).toBe(true);
   });
 
-  test("it has an <h1> heading with Create an Event", () => {
+  test("it has an <h1> heading with a Create an Event text content", () => {
     const wrapper = mount(CreateEvent);
+
     expect(wrapper.get("h1").text()).toBe("Create an Event");
   });
+
   test("it contains a form element", () => {
     const wrapper = mount(CreateEvent);
 
@@ -24,29 +26,34 @@ describe("CreateEvent", () => {
     expect(wrapper.contains("input[name='title'][type='text']")).toBe(true);
   });
 
-  test("it should have a submit button with a create value", () => {
+  test("it should contain a submit button with the value Create", () => {
     const wrapper = mount(CreateEvent);
+
     expect(wrapper.contains("input[value='Create'][type='submit']")).toBe(true);
   });
 
-  test("it should contain an imput field for the title eith the placeholder 'add a title'", () => {
+  test("it should contain an input field for the title with the placeholder 'Add a Title'", () => {
     const wrapper = mount(CreateEvent);
 
     const titleInput = wrapper.get("input[name='title']");
+
     expect(titleInput.attributes("placeholder")).toBe("Add a Title");
   });
 
   test("it should have an event data property", () => {
     const wrapper = mount(CreateEvent);
+
     expect(wrapper.vm.event).toEqual({
       title: ""
     });
   });
-
   test("it should bind the event title to the user input", () => {
     const wrapper = mount(CreateEvent);
+
     const titleInput = wrapper.get("input[name='title']");
-    titleInput.setValue("TEST_INPUT");
-    expect(wrapper.vm.event.title).toBe("TEST_INPUT");
+
+    titleInput.setValue("JS Pair Programming Session");
+
+    expect(wrapper.vm.event.title).toBe("JS Pair Programming Session");
   });
 });

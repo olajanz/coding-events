@@ -5,7 +5,23 @@
 </template>
 
 <script>
-export default {};
+import { getEvents } from "@/services/event-service.js";
+export default {
+  data() {
+    return {
+      events: {}
+    };
+  },
+
+  async created() {
+    try {
+      const res = await getEvents();
+      this.events = res.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+};
 </script>
 
 <style scoped></style>

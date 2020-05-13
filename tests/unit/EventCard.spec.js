@@ -1,53 +1,77 @@
 import { mount } from "@vue/test-utils";
 import EventCard from "@/components/EventCard.vue";
-import { getEvents } from "@/services/event-service.js";
 
-jest.mock("@/services/event-service.js");
-
-const exampleEvents = new Promise(reject => {
-  reject([
-    {
-      id: 1,
-      title: "Challenge Session",
-      details: "Please bring beer!",
-      date: "04/07/2020 20:00",
-      location: "https://zoom.us/j/861156*454"
-    },
-    {
-      id: 2,
-      title: "Study Group",
-      details: "Please bring your laptop!",
-      date: "06/19/2020 16:00",
-      location: "Albertina"
-    },
-    {
-      id: 3,
-      title: "Pair Programming Session",
-      details: "Please bring pizza!",
-      date: "05/06/2020 15:15",
-      location: "https://zoom.us/j/861156*454"
-    }
-  ]);
-});
+const exampleEvent = {
+  id: 1,
+  title: "Challenge Session",
+  details: "Please bring beer!",
+  date: "04/07/2020 20:00",
+  location: "https://zoom.us/j/861156*454",
+};
 
 describe("EventCard", () => {
   test("it should be able to mount the component", () => {
-    const wrapper = mount(EventCard);
+    const wrapper = mount(EventCard, {
+      propsData: {
+        event: exampleEvent,
+      },
+    });
+
     expect(wrapper).toBeDefined();
   });
 
-  test("it should call getEvents when created", () => {
-    getEvents.mockReset();
-    mount(EventCard);
+  test.skip("it should have a prop called event", () => {
+    const wrapper = mount(EventCard, {
+      propsData: {
+        event: exampleEvent,
+      },
+    });
 
-    expect(getEvents).toHaveBeenCalled();
+    expect(wrapper.vm.event).toEqual(exampleEvent);
   });
 
-  test("it should set the data property events to the recived events when created", () => {
-    getEvents.mockReset();
-    getEvents.mockReturnValue(exampleEvents);
-    const wrapper = mount(EventCard);
+  test.skip("is should have an h2 with the event title", () => {
+    const wrapper = mount(EventCard, {
+      propsData: {
+        event: exampleEvent,
+      },
+    });
 
-    expect(wrapper.vm.events).toEqual(exampleEvents);
+    expect(wrapper.get("h2").text()).toBe(exampleEvent.title);
+  });
+
+  test.skip("it should have a paragraph with the event details", () => {
+    const wrapper = mount(EventCard, {
+      propsData: {
+        event: exampleEvent,
+      },
+    });
+
+    expect(
+      wrapper.findAll("p").wrappers.find(p => p.text() == exampleEvent.details)
+    ).toBeTruthy();
+  });
+
+  test.skip("it should have a paragraph which contains the event location", () => {
+    const wrapper = mount(EventCard, {
+      propsData: {
+        event: exampleEvent,
+      },
+    });
+
+    expect(
+      wrapper.findAll("p").wrappers.find(p => p.text() == exampleEvent.location)
+    ).toBeTruthy();
+  });
+
+  test.skip("it should have an h3 with the event date formatted using Date.prototype.toDateString()", () => {
+    const exampleDate = "2020-05-12T18:42:51.592Z";
+    const wrapper = mount(EventCard, {
+      propsData: {
+        event: { ...exampleEvent, date: exampleDate },
+      },
+    });
+
+    expect(wrapper.get("h3").text()).toBe(new Date(exampleDate).toDateString());
   });
 });

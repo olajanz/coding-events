@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import axios from "axios";
 
 Vue.use(Vuex);
 
@@ -14,7 +15,9 @@ function getNewId() {
 export default new Vuex.Store({
   state: {
     notifications: [],
+    userData: null,
   },
+
   mutations: {
     PUSH_NOTIFICATION(state, notification) {
       state.notifications.push(notification);
@@ -24,6 +27,10 @@ export default new Vuex.Store({
         notification => notification.id == notificationToRemove.id
       );
       state.notifications.splice(index, 1);
+    },
+    SET_USER_DATA(state, userData) {
+      state.userData = userData;
+      axios.defaults.headers.common["Authorization"] = `Bearer ${userData.jwt}`;
     },
   },
   actions: {
@@ -38,6 +45,22 @@ export default new Vuex.Store({
       setTimeout(() => {
         context.commit("REMOVE_NOTIFICATION", notification);
       }, 6000);
+    },
+    async login(context, { email, password }) {
+      console.log("login", email, password);
+
+      // make a POST request
+      const res = await axios.post(
+        process.env.VUE_APP_API_URL + "/auth/local",
+        {
+          identifier: email,
+          password,
+        }
+      );
+
+      context.commit("SET_USER_DATA", res.data);
+
+      console.log(res.data);
     },
   },
 });
